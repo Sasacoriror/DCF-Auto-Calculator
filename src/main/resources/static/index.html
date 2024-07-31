@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DCF</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="Kalkulator.js"></script>
+    <script src="Auto.js"></script>
+</head>
+<body>
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand">Navbar</a>
+        </div>
+        <form class="navbar-form navbar-right" role="search">
+            <div class="form-group">
+                <label for="stock"></label>
+                <input type="text" class="form-control" placeholder="Search" id="stock">
+            </div>
+        </form>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row">
+        <h1>DCF = Discounted Cash Flow</h1>
+        <div class="col-md-5">
+            <form class="form">
+                <div class="form-group">
+                    <label for="currentSharePrice">Current Share Price</label>
+                    <input type="number" class="form-control" id="currentSharePrice">
+                </div>
+                <div class="form-group">
+                    <label for="FCF">Free Cash Flow Per Share (FCF)</label>
+                    <input type="number" class="form-control" id="FCF">
+                </div>
+                <div class="form-group">
+                    <label for="Growth">FCF Growth Rate (g)</label>
+                    <input type="number" class="form-control" id="Growth">
+                </div>
+                <div class="form-group">
+                    <label for="Years">Total Years To Simulate (n)</label>
+                    <input type="number" class="form-control" id="Years">
+                </div>
+                <div class="form-group">
+                    <label for="Discount">Discount Rate (k)</label>
+                    <input type="number" class="form-control" id="Discount">
+                </div>
+            </form>
+
+            <button class="btn btn-primary" onclick="Input()">Regn ut</button>
+            <button class="btn btn-primary" onclick="cashFlow()">test</button>
+            <div id="value"></div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
