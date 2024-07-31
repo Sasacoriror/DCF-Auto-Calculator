@@ -31,17 +31,19 @@ async function cashFlow() {
         }
         const data = await response.json();
 
-        calculateAndLogCashFlows(data);
+        logLatestCashFlows(data);
     } catch (error) {
         console.error(`Error fetching data: ${error}`);
     }
 }
 
-function calculateAndLogCashFlows(data) {
+function logLatestCashFlows(data) {
     const results = data.results;
 
-    results.forEach((result, index) => {
-        const cashFlowStatement = result.financials.cash_flow_statement;
+    // Assuming the latest data is the first entry in the array
+    if (results.length > 0) {
+        const latestResult = results[0];
+        const cashFlowStatement = latestResult.financials.cash_flow_statement;
 
         const netCashFlowFromOperatingActivities = cashFlowStatement.net_cash_flow_from_operating_activities
             ? cashFlowStatement.net_cash_flow_from_operating_activities.value
@@ -51,9 +53,10 @@ function calculateAndLogCashFlows(data) {
             ? cashFlowStatement.net_cash_flow_from_investing_activities.value
             : 0;
 
-        console.log(`Period ${index + 1}:`);
+        console.log(`Latest Period:`);
         console.log(`Net Cash Flow from Operating Activities: ${netCashFlowFromOperatingActivities}`);
         console.log(`Net Cash Flow from Investing Activities: ${netCashFlowFromInvestingActivities}`);
-        console.log('---------------------------------------------');
-    });
+    } else {
+        console.log('No financial data available.');
+    }
 }
