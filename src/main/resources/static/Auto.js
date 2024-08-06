@@ -1,3 +1,10 @@
+function runAll(){
+    stockPriceAPI()
+}
+
+
+
+
 // Define the API URL
 function outstandingSharesAPI() {
 
@@ -23,7 +30,7 @@ function outstandingSharesAPI() {
 
 async function cashFlowAPI() {
     let stock = document.getElementById("stock").value;
-    const apiUrl = 'https://api.polygon.io/v3/reference/tickers/' + stock + '?apiKey=Ix4tpJivedA1nWgzXSR8nQjJV1si8jbE';
+    const apiUrl = 'https://api.polygon.io/vX/reference/financials?ticker=' + stock + '&apiKey=Ix4tpJivedA1nWgzXSR8nQjJV1si8jbE';
 
 // Make a GET request
     fetch(apiUrl)
@@ -35,7 +42,7 @@ async function cashFlowAPI() {
         })
         .then(data => {
             console.log(data);
-            shares(data)
+            latestCashFlows(data)
         })
         .catch(error => {
             console.error('Error:', error);
@@ -75,6 +82,8 @@ function shares(data) {
     } catch (error) {
         console.error('Error extracting weighted shares outstanding:', error);
     }
+
+    return weightedSharesOutstanding;
 }
 
 function stockPrice(data){
@@ -83,13 +92,15 @@ function stockPrice(data){
         const stockPrice = data.results.market_cap;
         let price = stockPrice/weightedSharesOutstanding;
         console.log("stock price: "+ price)
-
+        document.getElementById('currentSharePrice').innerText = price;
     } catch (error) {
         console.error('Error extracting weighted shares outstanding:', error);
     }
+
+
 }
 
-function logLatestCashFlows(data, shares) {
+function latestCashFlows(data) {
     const results = data.results;
 
     // Assuming the latest data is the first entry in the array
@@ -104,15 +115,18 @@ function logLatestCashFlows(data, shares) {
         const netCashFlowFromInvestingActivities = cashFlowStatement.net_cash_flow_from_investing_activities
             ? cashFlowStatement.net_cash_flow_from_investing_activities.value
             : 0;
-/*
-        console.log(`Latest Period:`);
-        console.log(`Net Cash Flow from Operating Activities: ${netCashFlowFromOperatingActivities}`);
-        console.log(`Net Cash Flow from Investing Activities: ${netCashFlowFromInvestingActivities}`);
- */
+        /*
+                console.log(`Latest Period:`);
+                console.log(`Net Cash Flow from Operating Activities: ${netCashFlowFromOperatingActivities}`);
+                console.log(`Net Cash Flow from Investing Activities: ${netCashFlowFromInvestingActivities}`);
+         */
         let freeFlow = netCashFlowFromOperatingActivities - netCashFlowFromInvestingActivities;
 
         console.log('Free cash flow: '+freeFlow);
     } else {
         console.log('No financial data available.');
     }
+
+    return freeFlow;
 }
+
