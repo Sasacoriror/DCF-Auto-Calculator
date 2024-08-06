@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>DCF</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <script src="Kalkulator.js"></script>
     <script src="Auto.js"></script>
 </head>
 <body>
@@ -34,13 +33,14 @@
                     <div id="currentSharePrice"></div>
                 </div>
                 <div class="form-group">
-                    <label for="FCF">Free Cash Flow (FCF)</label>
+                    <label for="FCF">Free Cash Flow Per Share (FCF)</label>
                     <!--<input type="number" class="form-control" id="FCF">-->
                     <div id="FCF"></div>
                 </div>
                 <div class="form-group">
                     <label for="Growth">FCF Growth Rate (g)</label>
                     <input type="number" class="form-control" id="Growth">
+                    <!--<div id="Growth"></div>-->
                 </div>
                 <div class="form-group">
                     <label for="Years">Total Years To Simulate (n)</label>
@@ -52,8 +52,7 @@
                 </div>
             </form>
 
-            <button class="btn btn-primary" onclick="Input()">Regn ut</button>
-            <button class="btn btn-primary" onclick="runAll()">test</button>
+            <button class="btn btn-primary" onclick="calculate()">Regn ut</button>
             <div id="value"></div>
         </div>
     </div>
