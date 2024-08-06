@@ -1,95 +1,55 @@
 function runAll(){
-    stockPriceAPI()
+    stockPriceAPI();
+    cashFlowAPIV2();
 }
 
 
 
-
-// Define the API URL
-function outstandingSharesAPI() {
-
-    let stock = document.getElementById("stock").value;
-    const apiUrl = 'https://api.polygon.io/v3/reference/tickers/' + stock + '?apiKey=Ix4tpJivedA1nWgzXSR8nQjJV1si8jbE';
-
-// Make a GET request
-    fetch(apiUrl)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log(data);
-            shares(data)
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-}
-
-async function cashFlowAPI() {
+async function cashFlowAPIV2(){
     let stock = document.getElementById("stock").value;
     const apiUrl = 'https://api.polygon.io/vX/reference/financials?ticker=' + stock + '&apiKey=Ix4tpJivedA1nWgzXSR8nQjJV1si8jbE';
 
-// Make a GET request
-    fetch(apiUrl)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log(data);
-            latestCashFlows(data)
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
+
+    try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        console.log(data);
+        return latestCashFlows(data);
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
 }
 
-function stockPriceAPI(){
+async function stockPriceAPI(){
     let stock = document.getElementById("stock").value;
     const apiUrl = 'https://api.polygon.io/v3/reference/tickers/' + stock + '?apiKey=Ix4tpJivedA1nWgzXSR8nQjJV1si8jbE';
 
-// Make a GET request
-    fetch(apiUrl)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            //console.log(data);
-            stockPrice(data)
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
+
+    try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        console.log(data);
+        return stockPrice(data);
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
 }
 
 
 /////////////////////////////////////
 
-function shares(data) {
-
-    try {
-        const weightedSharesOutstanding = data.results.weighted_shares_outstanding;
-        console.log('Weighted Shares Outstanding:', weightedSharesOutstanding);
-
-    } catch (error) {
-        console.error('Error extracting weighted shares outstanding:', error);
-    }
-
-    return weightedSharesOutstanding;
-}
-
 function stockPrice(data){
     try {
-        const weightedSharesOutstanding = data.results.weighted_shares_outstanding;
-        const stockPrice = data.results.market_cap;
+        const weightedSharesOutstanding = parseFloat(data.results.weighted_shares_outstanding);
+        const stockPrice = parseFloat(data.results.market_cap);
         let price = stockPrice/weightedSharesOutstanding;
         console.log("stock price: "+ price)
         document.getElementById('currentSharePrice').innerText = price;
@@ -102,6 +62,7 @@ function stockPrice(data){
 
 function latestCashFlows(data) {
     const results = data.results;
+    let freeFlow = 0
 
     // Assuming the latest data is the first entry in the array
     if (results.length > 0) {
@@ -120,13 +81,22 @@ function latestCashFlows(data) {
                 console.log(`Net Cash Flow from Operating Activities: ${netCashFlowFromOperatingActivities}`);
                 console.log(`Net Cash Flow from Investing Activities: ${netCashFlowFromInvestingActivities}`);
          */
-        let freeFlow = netCashFlowFromOperatingActivities - netCashFlowFromInvestingActivities;
-
-        console.log('Free cash flow: '+freeFlow);
+        freeFlow = parseFloat(netCashFlowFromOperatingActivities) - parseFloat(netCashFlowFromInvestingActivities);
+        console.log('Free cash flow IS: '+freeFlow);
+        document.getElementById('FCF').innerText = freeFlow;
+        return freeFlow;
     } else {
         console.log('No financial data available.');
     }
-
-    return freeFlow;
 }
 
+function Cagr(){
+
+}
+
+async function test(){
+
+    //let cash = await
+    //let shares = await
+
+}
